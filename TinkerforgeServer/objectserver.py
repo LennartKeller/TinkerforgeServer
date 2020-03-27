@@ -4,7 +4,7 @@ from typing import Tuple, List
 
 class ObjectServer:
 
-    def __init__(self, name: str ='ObjectServer'):
+    def __init__(self, name: str = 'ObjectServer'):
         self.application = Flask(name)
         self.objects = {}
 
