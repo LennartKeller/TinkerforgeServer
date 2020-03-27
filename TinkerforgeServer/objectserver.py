@@ -1,7 +1,7 @@
 from flask import Flask
 
 
-class Server:
+class ObjectServer:
 
     def __init__(self):
         self.application = Flask(__name__)

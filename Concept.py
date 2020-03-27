@@ -1,5 +1,5 @@
 from flask import Flask
-from TinkerforgeServer import Server
+from TinkerforgeServer import ObjectServer
 
 
 class TestObject:
@@ -13,6 +13,6 @@ class TestObject:
 
 if __name__ == '__main__':
     test_obj = TestObject()
-    server = Server()
+    server = ObjectServer()
     server.add(test_obj)
     server.run(debug=True)
