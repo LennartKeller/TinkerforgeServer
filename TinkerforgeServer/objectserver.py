@@ -1,16 +1,16 @@
 from flask import Flask
 from typing import Tuple, List
-from inspect import isbuiltin
+
 
 class ObjectServer:
 
-    def __init__(self, name: str = None, filter_builtins: bool = False):
+    def __init__(self, name: str = None, filter_privates: bool = False):
         if name:
             self.application = Flask(name)
         else:
             self.application = Flask(__name__)
         self.objects = {}
-        self.filter_builtins = filter_builtins
+        self.filter_builtins = filter_privates
 
     def add(self, obj: object):
         self.objects[obj.__class__.__name__] = obj
@@ -20,7 +20,7 @@ class ObjectServer:
         for entry in dir(obj):
             if not callable(getattr(obj, entry)):
                 if self.filter_builtins:
-                    if not isbuiltin(getattr(obj, entry)):
+                    if not self.is_private(entry):
                         attributes.append(entry)
                 else:
                     attributes.append(entry)
@@ -31,11 +31,15 @@ class ObjectServer:
         for entry in dir(obj):
             if callable(getattr(obj, entry)):
                 if self.filter_builtins:
-                    if not isbuiltin(getattr(obj, entry)):
+                    if not self.is_private(entry):
                         methods.append(entry)
                 else:
                     methods.append(entry)
         return methods
+
+    @staticmethod
+    def is_private(method_name: str):
+        return method_name.startswith('_')
 
     @staticmethod
     def _get_method_signature(obj: object, method_name: str):

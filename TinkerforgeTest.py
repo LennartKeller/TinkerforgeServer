@@ -22,7 +22,7 @@ if __name__ == "__main__":
     mot = BrickletMotionDetectorV2(UID_MOT, ipcon)
     ipcon.connect(HOST, PORT) # Connect to brickd
     if ipcon.get_connection_state():
-        server = ObjectServer(filter_builtins=True)
+        server = ObjectServer(filter_privates=True)
         server.add(gps)
         server.add(hat)
         server.add(wea)
