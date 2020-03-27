@@ -15,7 +15,6 @@ class Server:
         def get_objects():
             return {'objects': list(self.object_store.keys())}, 200
 
-
         @self.application.route('/<object_name>')
         def get_object(object_name):
             try:
