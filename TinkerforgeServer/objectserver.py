@@ -1,5 +1,4 @@
 from flask import Flask
-from flask import jsonify
 from typing import Tuple, List
 
 
@@ -12,17 +11,19 @@ class ObjectServer:
     def add(self, obj: object):
         self.objects[obj.__class__.__name__] = obj
 
-    def _get_attributes(self, obj: object) -> List[str]:
+    @staticmethod
+    def _get_attributes(obj: object) -> List[str]:
         attributes = []
         for entry in dir(obj):
-            if not callable((getattr(obj, entry))):
+            if not callable(getattr(obj, entry)):
                 attributes.append(entry)
         return attributes
 
-    def _get_methods(self, obj: object) -> List[str]:
+    @staticmethod
+    def _get_methods(obj: object) -> List[str]:
         methods = []
         for entry in dir(obj):
-            if callable((getattr(obj, entry))):
+            if callable(getattr(obj, entry)):
                 methods.append(entry)
         return methods
 
@@ -40,7 +41,6 @@ class ObjectServer:
                 return {obj.__class__.__name__: {'attributes': attributes, 'methods': methods}}, 200
             except KeyError:
                 return {'response': 'Could not find object {}'.format(object_name)}, 400
-
 
         @self.application.route('/<string:object_name>/<string:attribute_name>')
         def get_attribute(object_name: str, attribute_name: str) -> Tuple[dict, int]:
