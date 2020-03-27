@@ -30,7 +30,7 @@ class ObjectServer:
             except KeyError:
                 return {'msg': 'Could not find object {}'.format(object_name)}, 400
             if not getattr(obj, attribute_name):
-                return {'msg': f'Could not find attr {} for object {}'.format(attribute_name, object_name)}, 400
+                return {'msg': 'Could not find attr {} for object {}'.format(attribute_name, object_name)}, 400
             if callable(getattr(obj, attribute_name)):
                 return getattr(obj, attribute_name)(), 200
             else:
