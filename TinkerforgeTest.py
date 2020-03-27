@@ -28,3 +28,4 @@ if __name__ == "__main__":
     server.add(hat)
     server.add(wea)
     server.add(mot)
+    server.run(host='0.0.0.0', port=8080)
