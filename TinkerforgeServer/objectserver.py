@@ -4,8 +4,11 @@ from typing import Tuple, List
 
 class ObjectServer:
 
-    def __init__(self, name: str = 'ObjectServer'):
-        self.application = Flask(name)
+    def __init__(self, name: str = None):
+        if name:
+            self.application = Flask(name)
+        else:
+            self.application = Flask(__name__)
         self.objects = {}
 
     def add(self, obj: object):
