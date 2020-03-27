@@ -1,5 +1,5 @@
 from flask import Flask
-
+from flask import jsonify
 
 class ObjectServer:
 
@@ -32,9 +32,13 @@ class ObjectServer:
             if not getattr(obj, attribute_name):
                 return {'response': 'Could not find attr {} for object {}'.format(attribute_name, object_name)}, 400
             if callable(getattr(obj, attribute_name)):
-                return {'response': getattr(obj, attribute_name)()}, 200
+                response = getattr(obj, attribute_name)()
             else:
-                return {'response': getattr(obj, attribute_name)}, 200
+                response = getattr(obj, attribute_name)
+            try:
+                return {'response': jsonify(response)}, 200
+            except TypeError as e:
+                return {'response': str(e)}, 500
 
     def run(self, *args, **kwargs):
         self._register_routes()
