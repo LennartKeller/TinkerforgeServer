@@ -32,9 +32,9 @@ class ObjectServer:
             if not getattr(obj, attribute_name):
                 return {'msg': 'Could not find attr {} for object {}'.format(attribute_name, object_name)}, 400
             if callable(getattr(obj, attribute_name)):
-                return getattr(obj, attribute_name)()
+                return {'response': getattr(obj, attribute_name)()}, 200
             else:
-                return getattr(obj, attribute_name)
+                return {'response': getattr(obj, attribute_name)}, 200
 
     def run(self, *args, **kwargs):
         self._register_routes()
