@@ -13,14 +13,14 @@ class ObjectServer:
     def _register_routes(self):
         @self.application.route('/')
         def get_objects():
-            return {'objects': list(self.object_store.keys())}, 200
+            return {'response': list(self.object_store.keys())}, 200
 
         @self.application.route('/<object_name>')
         def get_object(object_name):
             try:
                 obj = self.object_store[object_name]
             except KeyError:
-                return {'msg': 'Could not find object {}'.format(object_name)}, 400
+                return {'response': 'Could not find object {}'.format(object_name)}, 400
             return {obj.__class__.__name__: dir(obj)}, 200
 
         @self.application.route('/<object_name>/<attribute_name>')
@@ -28,9 +28,9 @@ class ObjectServer:
             try:
                 obj = self.object_store[object_name]
             except KeyError:
-                return {'msg': 'Could not find object {}'.format(object_name)}, 400
+                return {'response': 'Could not find object {}'.format(object_name)}, 400
             if not getattr(obj, attribute_name):
-                return {'msg': 'Could not find attr {} for object {}'.format(attribute_name, object_name)}, 400
+                return {'response': 'Could not find attr {} for object {}'.format(attribute_name, object_name)}, 400
             if callable(getattr(obj, attribute_name)):
                 return {'response': getattr(obj, attribute_name)()}, 200
             else:
