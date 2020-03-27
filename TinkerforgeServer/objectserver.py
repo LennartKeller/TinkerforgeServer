@@ -20,7 +20,7 @@ class ObjectServer:
             try:
                 obj = self.object_store[object_name]
             except KeyError:
-                return {'msg': f'Could not find object {object_name}'}, 400
+                return {'msg': 'Could not find object {}'.format(object_name)}, 400
             return {obj.__class__.__name__: dir(obj)}, 200
 
         @self.application.route('/<object_name>/<attribute_name>')
@@ -28,9 +28,9 @@ class ObjectServer:
             try:
                 obj = self.object_store[object_name]
             except KeyError:
-                return {'msg': f'Could not find object {object_name}'}, 400
+                return {'msg': 'Could not find object {}'.format(object_name)}, 400
             if not getattr(obj, attribute_name):
-                return {'msg': f'Could not find attr {attribute_name} for object {object_name}'}, 400
+                return {'msg': f'Could not find attr {} for object {}'.format(attribute_name, object_name)}, 400
             if callable(getattr(obj, attribute_name)):
                 return getattr(obj, attribute_name)(), 200
             else:
