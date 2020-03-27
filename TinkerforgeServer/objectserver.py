@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import jsonify
 
+
 class ObjectServer:
 
     def __init__(self):
@@ -36,7 +37,7 @@ class ObjectServer:
             else:
                 response = getattr(obj, attribute_name)
             try:
-                return {'response': jsonify(response)}, 200
+                return {'response': response}, 200
             except TypeError:
                 return {'response': str(response)}, 500
 
