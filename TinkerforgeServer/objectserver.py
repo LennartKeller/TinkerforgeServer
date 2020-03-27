@@ -37,8 +37,8 @@ class ObjectServer:
                 response = getattr(obj, attribute_name)
             try:
                 return {'response': jsonify(response)}, 200
-            except TypeError as e:
-                return {'response': str(e)}, 500
+            except TypeError:
+                return {'response': str(response)}, 500
 
     def run(self, *args, **kwargs):
         self._register_routes()
