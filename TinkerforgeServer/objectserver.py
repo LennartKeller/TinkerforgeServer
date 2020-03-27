@@ -4,8 +4,8 @@ from typing import Tuple, List
 
 class ObjectServer:
 
-    def __init__(self):
-        self.application = Flask(__name__)
+    def __init__(self, name: str ='ObjectServer'):
+        self.application = Flask(name)
         self.objects = {}
 
     def add(self, obj: object):
@@ -42,14 +42,14 @@ class ObjectServer:
             except KeyError:
                 return {'response': 'Could not find object {}'.format(object_name)}, 400
 
-        @self.application.route('/<string:object_name>/<string:attribute_name>')
-        def get_attribute(object_name: str, attribute_name: str) -> Tuple[dict, int]:
+        @self.application.route('/<obj_name>/<string:attribute_name>')
+        def get_attribute(obj_name: str, attribute_name: str) -> Tuple[dict, int]:
             try:
-                obj = self.objects[object_name]
+                obj = self.objects[obj_name]
             except KeyError:
-                return {'response': 'Could not find object {}'.format(object_name)}, 400
+                return {'response': 'Could not find object {}'.format(obj_name)}, 400
             if not getattr(obj, attribute_name):
-                return {'response': 'Could not find attr {} for object {}'.format(attribute_name, object_name)}, 400
+                return {'response': 'Could not find attr {} for object {}'.format(attribute_name, obj_name)}, 400
             if callable(getattr(obj, attribute_name)):
                 response = getattr(obj, attribute_name)()
             else:
