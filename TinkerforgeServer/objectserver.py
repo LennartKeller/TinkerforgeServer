@@ -1,5 +1,9 @@
 from flask import Flask
 from typing import Tuple, List
+from inspect import signature
+
+# TODO add signature parsing and method calling
+# TODO think about type handling
 
 
 class ObjectServer:
