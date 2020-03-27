@@ -19,7 +19,10 @@ class ObjectServer:
         attributes = []
         for entry in dir(obj):
             if not callable(getattr(obj, entry)):
-                if self.filter_builtins and not isbuiltin(getattr(obj, entry)):
+                if self.filter_builtins:
+                    if not isbuiltin(getattr(obj, entry)):
+                        attributes.append(entry)
+                else:
                     attributes.append(entry)
         return attributes
 
@@ -27,7 +30,10 @@ class ObjectServer:
         methods = []
         for entry in dir(obj):
             if callable(getattr(obj, entry)):
-                if self.filter_builtins and not isbuiltin(getattr(obj, entry)):
+                if self.filter_builtins:
+                    if not isbuiltin(getattr(obj, entry)):
+                        methods.append(entry)
+                else:
                     methods.append(entry)
         return methods
 
