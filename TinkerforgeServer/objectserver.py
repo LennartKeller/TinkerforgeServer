@@ -1,34 +1,39 @@
 from flask import Flask
 from typing import Tuple, List
-
+from inspect import isbuiltin
 
 class ObjectServer:
 
-    def __init__(self, name: str = None):
+    def __init__(self, name: str = None, filter_builtins: bool = False):
         if name:
             self.application = Flask(name)
         else:
             self.application = Flask(__name__)
         self.objects = {}
+        self.filter_builtins = filter_builtins
 
     def add(self, obj: object):
         self.objects[obj.__class__.__name__] = obj
 
-    @staticmethod
-    def _get_attributes(obj: object) -> List[str]:
+    def _get_attributes(self, obj: object) -> List[str]:
         attributes = []
         for entry in dir(obj):
             if not callable(getattr(obj, entry)):
-                attributes.append(entry)
+                if self.filter_builtins and not isbuiltin(getattr(obj, entry)):
+                    attributes.append(entry)
         return attributes
 
-    @staticmethod
-    def _get_methods(obj: object) -> List[str]:
+    def _get_methods(self, obj: object) -> List[str]:
         methods = []
         for entry in dir(obj):
             if callable(getattr(obj, entry)):
-                methods.append(entry)
+                if self.filter_builtins and not isbuiltin(getattr(obj, entry)):
+                    methods.append(entry)
         return methods
+
+    @staticmethod
+    def _get_method_signature(obj: object, method_name: str):
+        pass
 
     def _register_routes(self):
         @self.application.route('/')
