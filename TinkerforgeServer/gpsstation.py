@@ -17,16 +17,21 @@ class GPSStation:
         fix, n_satelites = self.bricklet.get_status()
         return n_satelites
 
-    def get_heading(self) -> float:
+    def get_course(self) -> float:
         if not self.has_fix():
             return math.nan
-        heading, speed = self.bricklet.get_motion()
-        return heading
+        course, speed = self.bricklet.get_motion()
+        return course
 
     def get_speed(self):
         if not self.has_fix():
             return math.nan
-        heading, speed = self.bricklet.get_motion()
+        course, speed = self.bricklet.get_motion()
         return speed / 100
+
+    def get_altitude(self):
+        if not self.has_fix():
+            return math.nan
+        return sum(self.bricklet.get_altitude())
 
 
