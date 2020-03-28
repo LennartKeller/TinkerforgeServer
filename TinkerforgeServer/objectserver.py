@@ -47,7 +47,7 @@ class ObjectServer:
 
     @staticmethod
     def _get_method_signature(obj: object, method_name: str):
-        pass
+        return str(signature(getattr(obj, method_name)))
 
     def _register_routes(self):
         @self.application.route('/')
@@ -80,6 +80,17 @@ class ObjectServer:
                 return {'response': response}, 200
             except TypeError:
                 return {'response': str(response)}, 200
+
+        @self.application.route('/<obj_name>/<string:method_name>/signature')
+        def get_method_signature(obj_name, method_name):
+            try:
+                obj = self.objects[obj_name]
+            except KeyError:
+                return {'response': 'Could not find object {}'.format(obj_name)}, 400
+            if method_name not in self._get_methods(obj):
+                return {'response': 'Object {} has no method {}'.format(obj_name, method_name)}, 400
+            return {'response': self._get_method_signature(obj, method_name)}, 200
+
 
     def run(self, *args, **kwargs):
         self._register_routes()
