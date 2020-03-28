@@ -1,8 +1,7 @@
-from flask import Flask
+from flask import Flask, request
 from typing import Tuple, List
 from inspect import signature
 
-# TODO add signature parsing and method calling
 # TODO think about type handling
 
 
@@ -64,22 +63,34 @@ class ObjectServer:
             except KeyError:
                 return {'response': 'Could not find object {}'.format(object_name)}, 400
 
-        @self.application.route('/<obj_name>/<string:attribute_name>')
-        def get_attribute(obj_name: str, attribute_name: str) -> Tuple[dict, int]:
+        @self.application.route('/<obj_name>/<string:attribute_name>', methods=['GET', 'POST'])
+        def get_attribute_or_method(obj_name: str, attribute_name: str) -> Tuple[dict, int]:
+            # Universal validation
             try:
                 obj = self.objects[obj_name]
             except KeyError:
                 return {'response': 'Could not find object {}'.format(obj_name)}, 400
             if not getattr(obj, attribute_name):
                 return {'response': 'Could not find attr {} for object {}'.format(attribute_name, obj_name)}, 400
-            if callable(getattr(obj, attribute_name)):
-                response = getattr(obj, attribute_name)()
-            else:
-                response = getattr(obj, attribute_name)
-            try:
-                return {'response': response}, 200
-            except TypeError:
-                return {'response': str(response)}, 200
+
+            # GET requests are used to call attributes or methods with no params
+            if request.method == 'GET':
+                if attribute_name in self._get_methods(obj):
+                    response = getattr(obj, attribute_name)()
+                else:
+                    response = getattr(obj, attribute_name)
+                try:
+                    return {'response': response}, 200
+                except TypeError:
+                    return {'response': str(response)}, 200
+            # POST requests are used for calling methods with params
+            if request.method == 'POST':
+                if attribute_name not in self._get_methods(obj):
+                    return {'respsonse': '{} is not a method'}, 400
+                args = request.json.get('args', [])
+                kwargs = request.json.get('kwargs', {})
+                response = getattr(obj, attribute_name)(*args, **kwargs)
+                return {'repsonse': response}, 200
 
         @self.application.route('/<obj_name>/<string:method_name>/signature')
         def get_method_signature(obj_name, method_name):
