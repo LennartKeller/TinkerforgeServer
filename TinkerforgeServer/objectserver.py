@@ -45,7 +45,7 @@ class ObjectServer:
 
     @staticmethod
     def _get_method_signature(obj: object, method_name: str) -> str:
-        # TODO return dict instead of string represenation
+        # TODO return dict instead of string representation
         return str(signature(getattr(obj, method_name)))
 
     def _register_routes(self):
