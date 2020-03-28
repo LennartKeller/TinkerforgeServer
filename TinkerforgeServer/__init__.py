@@ -1,3 +1,3 @@
 from .objectserver import ObjectServer
-from .weatherstation import TinkerforgeWeatherStation
+from .weatherstation import WeatherStation
 from .gpsstation import  GPSStation

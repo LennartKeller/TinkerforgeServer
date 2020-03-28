@@ -1,7 +1,7 @@
 from tinkerforge.bricklet_outdoor_weather import BrickletOutdoorWeather
 
 
-class TinkerforgeWeatherStation:
+class WeatherStation:
 
     def __init__(self, bricklet: BrickletOutdoorWeather):
         if not isinstance(bricklet, BrickletOutdoorWeather):

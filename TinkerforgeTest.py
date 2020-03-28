@@ -5,7 +5,7 @@ from tinkerforge.bricklet_outdoor_weather import BrickletOutdoorWeather
 from tinkerforge.ip_connection import IPConnection
 
 from TinkerforgeServer import ObjectServer
-from TinkerforgeServer import TinkerforgeWeatherStation, GPSStation
+from TinkerforgeServer import WeatherStation, GPSStation
 
 # CONSTANTS
 HOST = "localhost"
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     ipcon.connect(HOST, PORT)  # Connect to brickd
 
     if ipcon.get_connection_state():
-        weatherstation = TinkerforgeWeatherStation(wea)
+        weatherstation = WeatherStation(wea)
         gpsstation = GPSStation(gps)
 
         server = ObjectServer(filter_privates=True)
