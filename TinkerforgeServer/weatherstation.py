@@ -14,7 +14,7 @@ class WeatherStation:
         :return: degree celcius as float
         """
         temperature, humidity, last_change  = self.bricklet.get_sensor_data(83)
-        return temperature/10
+        return temperature / 10
 
     def get_humidity(self) -> float:
         """
