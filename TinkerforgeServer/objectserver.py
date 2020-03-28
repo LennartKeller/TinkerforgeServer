@@ -2,8 +2,6 @@ from flask import Flask, request
 from typing import Tuple, List
 from inspect import signature
 
-# TODO think about type handling
-
 
 class ObjectServer:
 
@@ -101,7 +99,6 @@ class ObjectServer:
             if method_name not in self._get_methods(obj):
                 return {'response': 'Object {} has no method {}'.format(obj_name, method_name)}, 400
             return {'response': self._get_method_signature(obj, method_name)}, 200
-
 
     def run(self, *args, **kwargs):
         self._register_routes()

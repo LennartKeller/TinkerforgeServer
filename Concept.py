@@ -10,6 +10,12 @@ class TestObject:
     def test(self):
         return 'Bar'
 
+    def upper(self, s: str = "Bus"):
+        return s.upper()
+
+    def test_method(self, *args, **kwargs):
+        return [args, kwargs]
+
 
 if __name__ == '__main__':
     test_obj = TestObject()
