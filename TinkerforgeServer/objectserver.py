@@ -76,7 +76,10 @@ class ObjectServer:
             # GET requests are used to call attributes or methods with no params
             if request.method == 'GET':
                 if attribute_name in self._get_methods(obj):
-                    response = getattr(obj, attribute_name)()
+                    try:
+                        response = getattr(obj, attribute_name)()
+                    except Exception as e:
+                        return {'response': str(e)}, 400
                 else:
                     response = getattr(obj, attribute_name)
                 try:
