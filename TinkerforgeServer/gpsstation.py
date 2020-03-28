@@ -1,5 +1,6 @@
 import math
 from tinkerforge.bricklet_gps_v2 import BrickletGPSV2
+from typing import List
 
 
 class GPSStation:
@@ -35,4 +36,15 @@ class GPSStation:
         alittude, geoidal_separation = self.bricklet.get_altitude()
         return (alittude - geoidal_separation) / 100
 
+    def get_longitude(self) -> List[float, str]:
+        if not self.has_fix():
+            return math.nan
+        latitude, ns, longitude, ew = gps.get_coordinates()
+        return [longitude / 1000000, ew]
+
+    def get_latitude(self) -> List[float, str]:
+        if not self.has_fix():
+            return math.nan
+        latitude, ns, longitude, ew = gps.get_coordinates()
+        return [latitude / 1000000, ns]
 
