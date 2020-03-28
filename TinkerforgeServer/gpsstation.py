@@ -23,15 +23,16 @@ class GPSStation:
         course, speed = self.bricklet.get_motion()
         return course
 
-    def get_speed(self):
+    def get_speed(self) -> float:
         if not self.has_fix():
             return math.nan
         course, speed = self.bricklet.get_motion()
         return speed / 100
 
-    def get_altitude(self):
+    def get_altitude(self) -> float:
         if not self.has_fix():
             return math.nan
-        return sum(self.bricklet.get_altitude())
+        alittude, geoidal_separation = self.bricklet.get_altitude()
+        return alittude - geoidal_separation
 
 
