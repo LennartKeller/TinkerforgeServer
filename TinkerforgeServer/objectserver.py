@@ -1,6 +1,7 @@
-from flask import Flask, request
-from typing import Tuple, List
 from inspect import signature
+from typing import Tuple, List
+
+from flask import Flask, request
 
 
 class ObjectServer:
@@ -81,6 +82,7 @@ class ObjectServer:
                     return {'response': response}, 200
                 except TypeError:
                     return {'response': str(response)}, 200
+
             # POST requests are used for calling methods with params
             if request.method == 'POST':
                 if attribute_name not in self._get_methods(obj):
