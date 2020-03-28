@@ -90,23 +90,41 @@ class ObjectServer:
                     return {'response': str(response)}, 200
 
             # POST requests are used for calling methods with params
-            # TODO if post with no body act like calling via GET => refactor this view
+
             if request.method == 'POST':
 
-                if attribute_name not in self._get_methods(obj):
-                    return {'respsonse': '{} is not a method'}, 400
-                args = request.json.get('args', [])
-                kwargs = request.json.get('kwargs', {})
+                # TODO refactoring
+                if not request.json:
+                    if attribute_name in self._get_methods(obj):
+                        try:
+                            response = getattr(obj, attribute_name)()
+                        except Exception as e:
+                            return {'response': str(e)}, 400
+                        try:
+                            return {'response': response}, 200
+                        except TypeError:
+                            return {'response': str(response)}, 200
 
-                try:
-                    response = getattr(obj, attribute_name)(*args, **kwargs)
-                except Exception as e:
-                    return {'response': str(e)}, 400
+                    elif attribute_name in self._get_attributes(obj):
+                        response = getattr(obj, attribute_name)
+                        return {'response': response}, 200
 
-                try:
-                    return {'response': response}, 200
-                except TypeError:
-                    return {'response': str(response)}, 200
+                    else:
+                        return {'response': 'Could not find {}'.format(attribute_name)}, 200
+
+                else:
+                    args = request.json.get('args', [])
+                    kwargs = request.json.get('kwargs', {})
+
+                    try:
+                        response = getattr(obj, attribute_name)(*args, **kwargs)
+                    except Exception as e:
+                        return {'response': str(e)}, 400
+
+                    try:
+                        return {'response': response}, 200
+                    except TypeError:
+                        return {'response': str(response)}, 200
 
         @self.application.route('/<obj_name>/<string:method_name>/signature')
         def get_method_signature(obj_name, method_name):
