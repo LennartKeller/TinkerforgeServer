@@ -66,6 +66,6 @@ if __name__ == "__main__":
         server = ObjectServer()
         weatherstation = TinkerforgeWeatherStation(wea)
         server.register(weatherstation)
-        server.run(host='0.0.0.0', port='80')
+        server.run(host='0.0.0.0', port='8080')
     else:
         print("Connection to Tinkerforge failed")
