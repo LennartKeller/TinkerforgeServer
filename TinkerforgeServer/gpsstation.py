@@ -48,3 +48,8 @@ class GPSStation:
         latitude, ns, longitude, ew = self.bricklet.get_coordinates()
         return [latitude / 1000000, ns]
 
+    def get_coordinates(self) -> Tuple[float, str, float, str]:
+        latitude, ns, longitude, ew = self.bricklet.get_coordinates()
+        latitude, longitude = latitude / 1000000, longitude / 1000000
+        return [latitude, ns, longitude, ew]
+
