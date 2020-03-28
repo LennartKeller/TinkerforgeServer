@@ -12,7 +12,7 @@ class ObjectServer:
         else:
             self.application = Flask(__name__)
         self.objects = {}
-        self.filter_builtins = filter_privates
+        self.filter_privates = filter_privates
 
     def register(self, obj: object):
         self.objects[obj.__class__.__name__] = obj
@@ -21,7 +21,7 @@ class ObjectServer:
         attributes = []
         for entry in dir(obj):
             if not callable(getattr(obj, entry)):
-                if self.filter_builtins:
+                if self.filter_privates:
                     if not self.is_private(entry):
                         attributes.append(entry)
                 else:
@@ -32,7 +32,7 @@ class ObjectServer:
         methods = []
         for entry in dir(obj):
             if callable(getattr(obj, entry)):
-                if self.filter_builtins:
+                if self.filter_privates:
                     if not self.is_private(entry):
                         methods.append(entry)
                 else:
