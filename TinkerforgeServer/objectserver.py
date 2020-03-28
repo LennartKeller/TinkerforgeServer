@@ -2,7 +2,7 @@ from inspect import signature
 from typing import Tuple, List
 
 from flask import Flask, request
-
+from flask_cors import CORS
 
 class ObjectServer:
 
@@ -11,6 +11,7 @@ class ObjectServer:
             self.application = Flask(name)
         else:
             self.application = Flask(__name__)
+        CORS(self.application)
         self.objects = {}
         self.filter_privates = filter_privates
 
