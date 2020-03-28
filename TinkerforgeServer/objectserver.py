@@ -90,6 +90,7 @@ class ObjectServer:
                     return {'response': str(response)}, 200
 
             # POST requests are used for calling methods with params
+            # TODO if post with no body act like calling via GET => refactor this view
             if request.method == 'POST':
 
                 if attribute_name not in self._get_methods(obj):
