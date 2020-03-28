@@ -22,11 +22,7 @@ if __name__ == "__main__":
     mot = BrickletMotionDetectorV2(UID_MOT, ipcon)
     ipcon.connect(HOST, PORT) # Connect to brickd
     if ipcon.get_connection_state():
-        server = ObjectServer(filter_privates=True)
-        server.add(gps)
-        server.add(hat)
-        server.add(wea)
-        server.add(mot)
-        server.run(host='0.0.0.0', port=8080, debug=True)
+        # register objects
+        pass
     else:
         print("Connection to Tinkerforge failed")

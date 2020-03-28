@@ -13,7 +13,7 @@ class ObjectServer:
         self.objects = {}
         self.filter_builtins = filter_privates
 
-    def add(self, obj: object):
+    def register(self, obj: object):
         self.objects[obj.__class__.__name__] = obj
 
     def _get_attributes(self, obj: object) -> List[str]:

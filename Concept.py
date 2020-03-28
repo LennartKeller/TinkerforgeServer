@@ -20,5 +20,5 @@ class TestObject:
 if __name__ == '__main__':
     test_obj = TestObject()
     server = ObjectServer()
-    server.add(test_obj)
+    server.register(test_obj)
     server.run(debug=True)
