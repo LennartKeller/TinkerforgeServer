@@ -39,12 +39,12 @@ class GPSStation:
     def get_longitude(self) -> Tuple[float, str]:
         if not self.has_fix():
             return math.nan
-        latitude, ns, longitude, ew = gps.get_coordinates()
+        latitude, ns, longitude, ew = self.bricklet.get_coordinates()
         return [longitude / 1000000, ew]
 
     def get_latitude(self) -> Tuple[float, str]:
         if not self.has_fix():
             return math.nan
-        latitude, ns, longitude, ew = gps.get_coordinates()
+        latitude, ns, longitude, ew = self.bricklet.get_coordinates()
         return [latitude / 1000000, ns]
 
