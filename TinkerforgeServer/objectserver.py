@@ -11,6 +11,7 @@ class ObjectServer:
             self.application = Flask(name)
         else:
             self.application = Flask(__name__)
+        # TODO this must be handled programmatically
         CORS(self.application)
         self.objects = {}
         self.filter_privates = filter_privates
