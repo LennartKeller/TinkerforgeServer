@@ -33,6 +33,6 @@ class GPSStation:
         if not self.has_fix():
             return math.nan
         alittude, geoidal_separation = self.bricklet.get_altitude()
-        return alittude - geoidal_separation
+        return (alittude - geoidal_separation) / 100
 
 
