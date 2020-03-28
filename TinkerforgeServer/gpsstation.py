@@ -53,3 +53,6 @@ class GPSStation:
         latitude, longitude = latitude / 1000000, longitude / 1000000
         return latitude, ns, longitude, ew
 
+    def get_chip_temperature(self):
+        return self.bricklet.get_chip_temperature()
+
